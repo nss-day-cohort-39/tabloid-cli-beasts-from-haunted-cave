@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using TabloidCLI.Models;
+using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -48,15 +51,50 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+
         private void List()
         {
             throw new NotImplementedException();
         }
-
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("New Post");
+            Post post = new Post();
+
+            Console.Write("Title: ");
+            post.Title = Console.ReadLine();
+
+            Console.Write("URL: ");
+            post.Url = Console.ReadLine();
+
+            Console.Write("Publication Date: Ex. (1234/12/12) ");
+            post.PublishDateTime = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Author: ");
+            AuthorRepository author = new AuthorRepository(_connectionString);
+            List<Author> authorList = author.GetAll();
+
+            int indexNum = 1;
+
+            foreach (Author eachObject in authorList)
+            {
+                Console.WriteLine($"{indexNum} {eachObject.FullName}");
+                indexNum++;
+            }
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                Console.WriteLine(authorList[choice - 1].FullName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+            }
+
+            _postRepository.Insert(post);
         }
+
 
         private void Edit()
         {

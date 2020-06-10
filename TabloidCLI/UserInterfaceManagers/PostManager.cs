@@ -67,7 +67,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("URL: ");
             post.Url = Console.ReadLine();
 
-            Console.Write("Publication Date: Ex. (1234/12/12) ");
+            Console.Write("Publication Date: Ex. (1/1/1111 12:00:00 AM) ");
             post.PublishDateTime = Convert.ToDateTime(Console.ReadLine());
 
             Console.Write("Author: ");
@@ -94,7 +94,6 @@ namespace TabloidCLI.UserInterfaceManagers
 
             _postRepository.Insert(post);
         }
-
 
         private void Edit()
         {

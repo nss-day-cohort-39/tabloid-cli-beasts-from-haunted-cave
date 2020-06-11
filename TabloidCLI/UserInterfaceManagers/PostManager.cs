@@ -123,7 +123,80 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Post post = new Post();
+            List<Post> posts = _postRepository.GetAll();
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Console.WriteLine(@$"{i+1}). Title: {posts[i].Title} 
+                    URL: {posts[i].Url} 
+                    Publish date time: {posts[i].PublishDateTime} 
+                    Author Id : {posts[i].Author.Id} 
+                    Blog Id {posts[i].Blog.Id}");
+            }
+            Console.Write("Enter your choice >");
+            int userChoice = -1; 
+            bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);
+            if (isUserChoice)
+            {
+                Console.WriteLine($"Your choice {posts[userChoice -1].Title} by {posts[userChoice - 1].Author.Id}");
+                Console.Write("Edit title >");
+                
+                string userTitleChoice = Console.ReadLine();
+                if (userTitleChoice != "" || userTitleChoice != null)
+                {
+                    posts[userChoice - 1].Title = userTitleChoice;
+                    
+                    Console.Write("Edit Url >");
+                    string userUrlChoice = Console.ReadLine();
+                    if (userUrlChoice != "" || userUrlChoice != null)
+                    {
+                        posts[userChoice - 1].Url = userUrlChoice;
+                        Console.Write("Edit Publish date time >");
+                        DateTime userPublishDateTimeChoice = Convert.ToDateTime(Console.ReadLine());
+                        if (userPublishDateTimeChoice != null)
+                        {
+                            posts[userChoice - 1].PublishDateTime = userPublishDateTimeChoice;
+                            Console.Write("Edit Author Id >");
+                            int userAuthorIdSelection = -1;
+                            bool userAuthorIdChoice = int.TryParse(Console.ReadLine(), out userAuthorIdSelection);
+                            if (userAuthorIdChoice || userAuthorIdSelection > 0)
+                            {
+                                posts[userChoice - 1].Author.Id = userAuthorIdSelection;
+                                int userBlogIdSelection = -1;
+                                bool userBlogIdChoice = int.TryParse(Console.ReadLine(), out userAuthorIdSelection);
+                                if (userBlogIdChoice || userBlogIdSelection > 0)
+                                {
+                                    posts[userChoice - 1].Blog.Id = userBlogIdSelection;
+
+                                    post.Title = posts[userChoice - 1].Title;
+                                    post.Url = posts[userChoice - 1].Url;
+                                    post.PublishDateTime = posts[userChoice - 1].PublishDateTime;
+                                    post.Author.Id = posts[userChoice - 1].Author.Id;
+                                    post.Blog.Id = posts[userChoice - 1].Blog.Id;
+                                    _postRepository.Update(post);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Choice");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid Choice");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please enter title");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice");
+            }
         }
         
         private void Remove()
@@ -134,10 +207,10 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Post post = posts[i];
                 Console.WriteLine(@$" {i + 1}) [Title:-{post.Title}
-                                         Url: {post.Url}
-                                         Published Date:- {post.PublishDateTime}
-                                         Author Id:- {post.Id}
-                                         Blog Id:- {post.Id}]");
+                    Url: {post.Url}
+                    Published Date:- {post.PublishDateTime}
+                    Author Id:- {post.Id}
+                    Blog Id:- {post.Id}]");
             }
             int userChoice = -1;
             bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);

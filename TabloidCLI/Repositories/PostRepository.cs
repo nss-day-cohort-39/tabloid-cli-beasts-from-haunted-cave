@@ -215,7 +215,9 @@ namespace TabloidCLI.Repositories
                         post.Url = @postUrl,
                         post.PublishDateTime = @publishDateTime,
                         post.Author.AuthorId = @authorId,
-                        post.Blog.BlogId = @blogId";
+                        post.Blog.BlogId = @blogId
+                        From Post
+                        LEFT JOIN Author author ON author.Id = post.AuthorId";
                     cmd.Parameters.AddWithValue("@postTitle", post.Title);
                     cmd.Parameters.AddWithValue("@postUrl", post.Url);
                     cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);

@@ -9,7 +9,7 @@ namespace TabloidCLI
     public class AuthorRepository : DatabaseConnector, IRepository<Author>
     {
         public AuthorRepository(string connectionString) : base(connectionString) { }
-
+        
         public List<Author> GetAll()
         {
             using (SqlConnection conn = Connection)

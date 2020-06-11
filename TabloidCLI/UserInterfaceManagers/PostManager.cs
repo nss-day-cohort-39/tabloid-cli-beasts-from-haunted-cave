@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
 
@@ -26,7 +27,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
             Console.WriteLine(" 0) Go Back");
-
+           
             Console.Write("> ");
             string choice = Console.ReadLine();
             switch (choice)
@@ -54,7 +55,11 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _postRepository.GetAll();
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Console.WriteLine(@$"{i+1}).Title: {posts[i].Title} Url: {posts[i].Url}");
+            }
         }
         private void Add()
         {
@@ -67,42 +72,84 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("URL: ");
             post.Url = Console.ReadLine();
 
-            Console.Write("Publication Date: Ex. (1/1/1111 12:00:00 AM) ");
+            Console.Write("Publication Date: Ex. (1/1/1111 12:00:00 AM) > ");
             post.PublishDateTime = Convert.ToDateTime(Console.ReadLine());
 
-            Console.Write("Author: ");
+            Console.WriteLine("Author: ");
             AuthorRepository author = new AuthorRepository(_connectionString);
             List<Author> authorList = author.GetAll();
 
-            int indexNum = 1;
+            for(int i=0; i<authorList.Count; i++)
+            {
+                Console.WriteLine($"{i+1} {authorList[i].FullName}");
+            }
+           
+            int usrAuthorChoice = -10;
+            bool userChoice = int.TryParse(Console.ReadLine(), out usrAuthorChoice);
+            if(userChoice)
+            {
+                Console.WriteLine($"Author {authorList[usrAuthorChoice -1].FullName}");
+                Console.WriteLine($"Your Author choice {usrAuthorChoice}");
+                post.Author = authorList[usrAuthorChoice-1];
 
-            foreach (Author eachObject in authorList)
-            {
-                Console.WriteLine($"{indexNum} {eachObject.FullName}");
-                indexNum++;
+                BlogRepository blogRepo = new BlogRepository(_connectionString);
+                List<Blog> blogs = blogRepo.GetAll();
+                for (int i=0;i< authorList.Count; i++)
+                {
+                    Console.WriteLine($"{i+1} {blogs[i].Title}");
+                }
+                Console.WriteLine("Choose Blog");
+                int blogChoice = -1;
+                bool userBlogChoice = int.TryParse(Console.ReadLine(), out blogChoice);
+                if (userBlogChoice)
+                {
+                    Console.WriteLine($"Your Blog choice {blogs[blogChoice - 1].Title}");
+                    post.Blog = blogs[blogChoice - 1];
+                    _postRepository.Insert(post);
+
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice");
+                }
+
             }
-            string input = Console.ReadLine();
-            try
-            {
-                int choice = int.Parse(input);
-                Console.WriteLine(authorList[choice - 1].FullName);
-            }
-            catch (Exception ex)
+            else
             {
                 Console.WriteLine("Invalid Selection");
             }
 
-            _postRepository.Insert(post);
         }
 
         private void Edit()
         {
             throw new NotImplementedException();
         }
-
+        
         private void Remove()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Please choose post");
+            List<Post> posts = _postRepository.GetAll();
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Post post = posts[i];
+                Console.WriteLine(@$" {i + 1}) [Title:-{post.Title}
+                                         Url: {post.Url}
+                                         Published Date:- {post.PublishDateTime}
+                                         Author Id:- {post.Id}
+                                         Blog Id:- {post.Id}]");
+            }
+            int userChoice = -1;
+            bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);
+            if (isUserChoice)
+            {
+                Console.WriteLine($"Your choice is {userChoice}");
+                _postRepository.Delete(posts[userChoice -1].Id);
+            }
+            else
+            {
+                Console.WriteLine("Invalid Selection");
+            }
         }
     }
 }

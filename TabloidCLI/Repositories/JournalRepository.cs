@@ -140,6 +140,7 @@ namespace TabloidCLI
             }
         }
 
+
         //public void InsertJournal(Journal journal, Tag tag)
         //{
         //    using (SqlConnection conn = Connection)

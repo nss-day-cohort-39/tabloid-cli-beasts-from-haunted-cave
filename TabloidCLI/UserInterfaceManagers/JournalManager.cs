@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using TabloidCLI.Models;
@@ -57,6 +58,8 @@ namespace TabloidCLI.UserInterfaceManagers
             foreach (Journal journal in journals)
             {
                 Console.WriteLine(journal.Title);
+                Console.WriteLine(journal.Content);
+                Console.WriteLine(journal.CreateDateTime);
             }
         }
 
@@ -91,6 +94,37 @@ namespace TabloidCLI.UserInterfaceManagers
                     _journalRepository.Delete(journalToDelete.Id);
                 }
             } 
+        }
+
+        private Journal Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose an Author:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Journal> journals = _journalRepository.GetAll();
+
+            for (int i = 0; i < journals.Count; i++)
+            { 
+                Journal journal = journals[i];
+                Console.WriteLine($" {i + 1}) {journal.Title} - {journal.Content} - {journal.CreateDateTime}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return journals[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
         }
     }
 }

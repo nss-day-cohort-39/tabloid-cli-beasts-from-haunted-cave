@@ -118,18 +118,20 @@ namespace TabloidCLI.UserInterfaceManagers
 
                 Console.Write("Enter Journal Title > ");
                 string userTitleChoice = Console.ReadLine();
-                if (userTitleChoice != null || userTitleChoice != "")
+                if (!string.IsNullOrWhiteSpace(userTitleChoice))
                 {
                     journalEntries[userChoice - 1].Title = userTitleChoice;
 
                     Console.Write("Enter Journal Content > ");
                     string userContentChoice = Console.ReadLine();
-                    if (userContentChoice != null || userContentChoice != "")
+                    if (!string.IsNullOrWhiteSpace(userContentChoice))
                     {
                         journalEntries[userChoice - 1].Content = userContentChoice;
 
                         Console.Write("Enter Date & Time > ");
                         DateTime userCreateDateTimeChoice = Convert.ToDateTime(Console.ReadLine());
+                        
+                        
                         if (userCreateDateTimeChoice != null)
                         {
                             journalEntries[userChoice - 1].CreateDateTime = userCreateDateTimeChoice;

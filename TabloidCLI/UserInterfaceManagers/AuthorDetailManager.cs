@@ -25,12 +25,12 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Author author = _authorRepository.Get(_authorId);
-            Console.WriteLine($"{author.FullName} Details");
-            Console.WriteLine(" 1) View");
-            Console.WriteLine(" 2) View Blog Posts");
-            Console.WriteLine(" 3) Add Tag");
-            Console.WriteLine(" 4) Remove Tag");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine($"\n{author.FullName} Details");
+            Console.WriteLine("1) View");
+            Console.WriteLine("2) View Blog Posts");
+            Console.WriteLine("3) Add Tag");
+            Console.WriteLine("4) Remove Tag");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();

@@ -114,13 +114,15 @@ namespace TabloidCLI
                                            SET Title = @title,
                                                Content = @content,
                                                CreateDateTime = @createDateTime
-                                         WHERE id = @id";
-                       
+                                         WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", journal.Id);
                     cmd.Parameters.AddWithValue("@title", journal.Title);
                     cmd.Parameters.AddWithValue("@content", journal.Content);
                     cmd.Parameters.AddWithValue("@createDateTime", journal.CreateDateTime);
 
                     cmd.ExecuteNonQuery();
+
                 }
             }
         }

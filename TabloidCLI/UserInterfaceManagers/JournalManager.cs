@@ -12,11 +12,14 @@ namespace TabloidCLI.UserInterfaceManagers
         private JournalRepository _journalRepository;
         private string _connectionString;
 
+        private JournalRepository journalRepo;
+
         public JournalManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
             _journalRepository = new JournalRepository(connectionString);
             _connectionString = connectionString;
+            journalRepo = new JournalRepository(_connectionString);
         }
 
         public IUserInterfaceManager Execute()
@@ -82,7 +85,79 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            // 1. loop list of jornals
+            // 2. display all journals from index 
+            // 2.5 take input from user
+            // 3. choose  from #
+            // 4. check = int
+            // 5. get journal that matches chosen journal 
+            // 6. update empty Journal bucket = chosenJournal
+            // 7. Call Update(updatedJournal)
+            //
+            // Later... Empty or Return does NOT change existing Journal Entry. 
+            // Also do this on Edit Post
+
+            // Empty bucket
+            Journal journal = new Journal();
+
+            List<Journal> journalEntries = journalRepo.GetAll();
+
+            for (int i = 0; i < journalEntries.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} {journalEntries[i].Title} \n " +
+                    $"Date: {journalEntries[i].CreateDateTime} \n " +
+                    $"Content: {journalEntries[i].Content} ");
+            }
+
+            Console.Write("Select Journal entry > ");
+            int userChoice = -1;
+            bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);
+            if (isUserChoice)
+            {
+                journalEntries[userChoice - 1].Id = userChoice;
+
+                Console.Write("Enter Journal Title > ");
+                string userTitleChoice = Console.ReadLine();
+                if (userTitleChoice != null || userTitleChoice != "")
+                {
+                    journalEntries[userChoice - 1].Title = userTitleChoice;
+
+                    Console.Write("Enter Journal Content > ");
+                    string userContentChoice = Console.ReadLine();
+                    if (userContentChoice != null || userContentChoice != "")
+                    {
+                        journalEntries[userChoice - 1].Content = userContentChoice;
+
+                        Console.Write("Enter Date & Time > ");
+                        DateTime userCreateDateTimeChoice = Convert.ToDateTime(Console.ReadLine());
+                        if (userCreateDateTimeChoice != null)
+                        {
+                            journalEntries[userChoice - 1].CreateDateTime = userCreateDateTimeChoice;
+                            //
+                            journal.Id = journalEntries[userChoice - 1].Id;
+                            journal.Title = journalEntries[userChoice - 1].Title;
+                            journal.Content = journalEntries[userChoice - 1].Content;
+                            journal.CreateDateTime = journalEntries[userChoice - 1].CreateDateTime;
+                            //
+                            journalRepo.Update(journal);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Incorrect Date & Time entered.");
+                        }
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Incorrect Content.");
+                    }
+                }
+
+                else
+                {
+                    Console.WriteLine("Must be greater than Zero");
+                }
+            }
         }
 
         private void Remove()

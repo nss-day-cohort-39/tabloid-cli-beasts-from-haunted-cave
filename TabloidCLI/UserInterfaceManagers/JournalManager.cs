@@ -131,7 +131,6 @@ namespace TabloidCLI.UserInterfaceManagers
                         Console.Write("Enter Date & Time > ");
                         DateTime userCreateDateTimeChoice = Convert.ToDateTime(Console.ReadLine());
                         
-                        
                         if (userCreateDateTimeChoice != null)
                         {
                             journalEntries[userChoice - 1].CreateDateTime = userCreateDateTimeChoice;

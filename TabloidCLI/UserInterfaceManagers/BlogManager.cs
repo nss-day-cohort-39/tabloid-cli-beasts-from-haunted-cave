@@ -80,7 +80,47 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Blog blog = new Blog();
+
+            List<Blog> blogs = _blogRepository.GetAll();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} {blogs[i].Title} {blogs[i].Url}");
+            }
+
+            //
+
+            Console.Write("Please choose a blog: > ");
+
+            int userChoice = -1;
+
+            bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);
+
+            if(isUserChoice)
+            {
+                blogs[userChoice - 1].Id = userChoice;
+
+                Console.Write("Please enter Title: > ");
+                string userTitleChoice = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(userTitleChoice))
+                {
+                    blogs[userChoice - 1].Title = userTitleChoice;
+
+                    Console.Write("Please enter a Url: > ");
+                    string userUrlChoice = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(userUrlChoice))
+                    {
+                        blogs[userChoice - 1].Url = userUrlChoice;
+
+                        blog.Id = blogs[userChoice - 1].Id;
+                        blog.Title = blogs[userChoice - 1].Title;
+                        blog.Url = blogs[userChoice - 1].Url;
+
+                        _blogRepository.Update(blog);
+                    }
+                }  
+            }
         }
 
         private void Remove()

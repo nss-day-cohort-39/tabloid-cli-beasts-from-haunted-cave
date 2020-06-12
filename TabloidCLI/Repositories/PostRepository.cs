@@ -210,20 +210,19 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"UPDATE Post post
-                        SET post.Title = @postTitle,
-                        post.Url = @postUrl,
-                        post.PublishDateTime = @publishDateTime,
-                        post.Author.AuthorId = @authorId,
-                        post.Blog.BlogId = @blogId
-                        From Post
-                        LEFT JOIN Author author ON author.Id = post.AuthorId";
+                    cmd.CommandText = @"UPDATE Post
+                        SET Title = @postTitle,
+                        URL = @postUrl,
+                        PublishDateTime = @publishDateTime,
+                        AuthorId = @authorId,
+                        BlogId = @blogId
+                        WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", post.Id);
                     cmd.Parameters.AddWithValue("@postTitle", post.Title);
                     cmd.Parameters.AddWithValue("@postUrl", post.Url);
                     cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
                     cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
                     cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
-
                     cmd.ExecuteNonQuery();
                 }
                                 

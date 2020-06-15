@@ -21,13 +21,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Blog Menu");
-            Console.WriteLine(" 1) List Blogs");
-            Console.WriteLine(" 2) Add Blog");
-            Console.WriteLine(" 3) Edit Blog");
-            Console.WriteLine(" 4) Remove Blog");
+            Console.WriteLine("\n# BLOG MENU");
+            Console.WriteLine("1) List Blogs");
+            Console.WriteLine("2) Add Blog");
+            Console.WriteLine("3) Edit Blog");
+            Console.WriteLine("4) Remove Blog");
             Console.WriteLine(" 5) Blog Details");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -68,8 +68,8 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Blog> blogs = _blogRepository.GetAll();
             foreach (Blog blog in blogs)
             {
-                Console.WriteLine(blog.Title);
-                Console.WriteLine(blog.Url);
+                Console.WriteLine($"\n{blog.Title}");
+                Console.WriteLine($"{blog.Url}");
                
             }
         }

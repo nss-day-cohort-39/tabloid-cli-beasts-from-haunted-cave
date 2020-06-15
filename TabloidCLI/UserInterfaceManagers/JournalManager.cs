@@ -24,12 +24,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Journal Menu");
-            Console.WriteLine(" 1) List Journals");
-            Console.WriteLine(" 2) Add Journal");
-            Console.WriteLine(" 3) Edit Journal");
-            Console.WriteLine(" 4) Remove Journal");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine("\n# JOURNAL MENU");
+            Console.WriteLine("1) List Journals");
+            Console.WriteLine("2) Add Journal");
+            Console.WriteLine("3) Edit Journal");
+            Console.WriteLine("4) Remove Journal");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -58,26 +58,29 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Journal> journals = _journalRepository.GetAll();
+            
+            Console.WriteLine("\nJOURNAL ENTRIES");
             foreach (Journal journal in journals)
             {
-                Console.WriteLine(journal.Title);
-                Console.WriteLine(journal.Content);
-                Console.WriteLine(journal.CreateDateTime);
+                Console.WriteLine();
+                Console.WriteLine($"Title: {journal.Title}");
+                Console.WriteLine($"Content: {journal.Content}");
+                Console.WriteLine($"Date & Time: {journal.CreateDateTime}");
             }
         }
 
         private void Add()
         {
-            Console.WriteLine("New Journal");
+            Console.WriteLine("\nNew Journal");
             Journal journal = new Journal();
 
-            Console.Write("Title: ");
+            Console.Write("\nTitle: ");
             journal.Title = Console.ReadLine();
 
-            Console.Write("Content: ");
+            Console.Write("\nContent: ");
             journal.Content = Console.ReadLine();
 
-            Console.Write("CreateDateTime: ");
+            Console.Write("\nCreateDateTime: ");
             journal.CreateDateTime = Convert.ToDateTime(Console.ReadLine());
 
             _journalRepository.Insert(journal);
@@ -102,33 +105,34 @@ namespace TabloidCLI.UserInterfaceManagers
 
             List<Journal> journalEntries = journalRepo.GetAll();
 
+            Console.WriteLine("\nJOURNAL ENTRIES - EDIT:");
             for (int i = 0; i < journalEntries.Count; i++)
             {
-                Console.WriteLine($"{i + 1} {journalEntries[i].Title} \n " +
-                    $"Date: {journalEntries[i].CreateDateTime} \n " +
+                Console.WriteLine($"\nEntry {i + 1} \n{journalEntries[i].Title} \n" +
+                    $"Date: {journalEntries[i].CreateDateTime} \n" +
                     $"Content: {journalEntries[i].Content} ");
             }
 
-            Console.Write("Select Journal entry > ");
+            Console.Write("\nSelect Journal entry to edit > ");
             int userChoice = -1;
             bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);
             if (isUserChoice)
             {
                 journalEntries[userChoice - 1].Id = userChoice;
 
-                Console.Write("Enter Journal Title > ");
+                Console.Write("\nEnter Journal Title > ");
                 string userTitleChoice = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(userTitleChoice))
                 {
                     journalEntries[userChoice - 1].Title = userTitleChoice;
 
-                    Console.Write("Enter Journal Content > ");
+                    Console.Write("\nEnter Journal Content > ");
                     string userContentChoice = Console.ReadLine();
                     if (!string.IsNullOrWhiteSpace(userContentChoice))
                     {
                         journalEntries[userChoice - 1].Content = userContentChoice;
 
-                        Console.Write("Enter Date & Time > ");
+                        Console.Write("\nEnter Date & Time > ");
                         DateTime userCreateDateTimeChoice = Convert.ToDateTime(Console.ReadLine());
                         
                         if (userCreateDateTimeChoice != null)
@@ -188,7 +192,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Journal journal = journals[i];
                 Console.WriteLine($" {i + 1}) {journal.Title} - {journal.Content} - {journal.CreateDateTime}");
             }
-            Console.Write("> ");
+            Console.Write("\n> ");
 
             string input = Console.ReadLine();
             try

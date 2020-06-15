@@ -178,7 +178,53 @@ namespace TabloidCLI.Repositories
                 }
             }
         }
-        
+
+        public List<Post> GetByBlog(int blogId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT p.id,
+                                               p.Title As PostTitle,
+                                               p.URL AS PostUrl,
+                                               p.PublishDateTime,
+                                               p.BlogId,
+                                               b.Title AS BlogTitle,
+                                               b.URL AS BlogUrl
+                                          FROM Post p 
+                                               LEFT JOIN Blog b on p.BlogId = b.Id 
+                                         WHERE p.BlogId = @blogId";
+                    cmd.Parameters.AddWithValue("@blogId", blogId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Post> posts = new List<Post>();
+                    while (reader.Read())
+                    {
+                        Post post = new Post()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("PostTitle")),
+                            Url = reader.GetString(reader.GetOrdinal("PostUrl")),
+                            PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                            Blog = new Blog()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
+                                Title = reader.GetString(reader.GetOrdinal("BlogTitle")),
+                                Url = reader.GetString(reader.GetOrdinal("BlogUrl")),
+                            }
+                        };
+                        posts.Add(post);
+                    }
+
+                    reader.Close();
+
+                    return posts;
+                }
+            }
+        }
+
         public void Insert(Post post)
         {
             

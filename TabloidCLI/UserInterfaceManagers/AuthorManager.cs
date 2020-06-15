@@ -19,13 +19,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Author Menu");
-            Console.WriteLine(" 1) List Authors");
-            Console.WriteLine(" 2) Author Details");
-            Console.WriteLine(" 3) Add Author");
-            Console.WriteLine(" 4) Edit Author");
-            Console.WriteLine(" 5) Remove Author");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine("\n# AUTHORS MENU");
+            Console.WriteLine("1) List Authors");
+            Console.WriteLine("2) Author Details");
+            Console.WriteLine("3) Add Author");
+            Console.WriteLine("4) Edit Author");
+            Console.WriteLine("5) Remove Author");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -64,9 +64,11 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Author> authors = _authorRepository.GetAll();
+
+            Console.WriteLine($"\nAuthors:");
             foreach (Author author in authors)
             {
-                Console.WriteLine(author);
+                Console.WriteLine($"{author}");
             }
         }
 
@@ -84,7 +86,7 @@ namespace TabloidCLI.UserInterfaceManagers
             for (int i = 0; i < authors.Count; i++)
             {
                 Author author = authors[i];
-                Console.WriteLine($" {i + 1}) {author.FullName}");
+                Console.WriteLine($"{i + 1}) {author.FullName}");
             }
             Console.Write("> ");
 

@@ -24,12 +24,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Post Menu");
-            Console.WriteLine(" 1) List Posts");
-            Console.WriteLine(" 2) Add Post");
-            Console.WriteLine(" 3) Edit Post");
-            Console.WriteLine(" 4) Remove Post");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine("\n# POSTS MENU");
+            Console.WriteLine("1) List Posts");
+            Console.WriteLine("2) Add Post");
+            Console.WriteLine("3) Edit Post");
+            Console.WriteLine("4) Remove Post");
+            Console.WriteLine("0) Go Back");
            
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -59,9 +59,11 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Post> posts = _postRepository.GetAll();
+
+            Console.WriteLine($"\nPOSTS: ");
             for (int i = 0; i < posts.Count; i++)
             {
-                Console.WriteLine(@$"{i+1}).Title: {posts[i].Title} Url: {posts[i].Url}");
+                Console.WriteLine($"{i+1}) Title: {posts[i].Title} \n   Url: {posts[i].Url}\n");
             }
         }
         private void Add()
@@ -190,13 +192,13 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();
             for (int i = 0; i < posts.Count; i++)
             {
-                Console.WriteLine(@$"{i+1}). Title: {posts[i].Title} 
-                    URL: {posts[i].Url} 
-                    Publish date time: {posts[i].PublishDateTime} 
-                    Author Id : {posts[i].Author.Id} 
-                    Blog Id {posts[i].Blog.Id}");
+                Console.WriteLine($"\n{i + 1}) Title: {posts[i].Title}");
+                Console.WriteLine($"   URL: {posts[i].Url}");
+                Console.WriteLine($"   Publish Date & Time: {posts[i].PublishDateTime}"); 
+                Console.WriteLine($"   Author Id: {posts[i].Author.Id}"); 
+                Console.WriteLine($"   Blog Id: {posts[i].Blog.Id}");
             }
-            Console.Write("Enter your choice >");
+            Console.Write("\nEnter your choice >");
             int userChoice = -1; 
             bool isUserChoice = int.TryParse(Console.ReadLine(), out userChoice);
             if (isUserChoice)

@@ -20,12 +20,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Tag Menu");
-            Console.WriteLine(" 1) List Tags");
-            Console.WriteLine(" 2) Add Tag");
-            Console.WriteLine(" 3) Edit Tag");
-            Console.WriteLine(" 4) Remove Tag");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine("\nTAG MENU");
+            Console.WriteLine("1) List Tags");
+            Console.WriteLine("2) Add Tag");
+            Console.WriteLine("3) Edit Tag");
+            Console.WriteLine("4) Remove Tag");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();

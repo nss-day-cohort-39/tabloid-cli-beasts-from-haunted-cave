@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -50,22 +53,92 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Tag> tags = _tagRepository.GetAll();
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Console.WriteLine($"Id: {tags[i].Id} Name: {tags[i].Name}");
+            }
         }
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Tag tag = new Tag();
+            Console.Write("Enter tag name> ");
+            string tagName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+                tag.Name = tagName;
+                _tagRepository.Insert(tag);
+            }
+            else
+            {
+                Console.WriteLine("Invalid input");
+            }
         }
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Tag tag = new Tag();
+            List<Tag> tags = _tagRepository.GetAll();
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Console.WriteLine($"{i+1}) Id: {tags[i].Id} Name: {tags[i].Name}");
+            }
+            Console.Write("Please choose tag> ");
+            int userTagChoice = -1;
+            bool isUserTagChoice = int.TryParse(Console.ReadLine(), out userTagChoice);
+            if (isUserTagChoice)
+            {
+                Console.Write("Enter tag name>");
+                string tagNameToEdit = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(tagNameToEdit))
+                {
+                    tags[userTagChoice -1].Name = tagNameToEdit;
+                    tag.Id = tags[userTagChoice - 1].Id;
+                    tag.Name = tags[userTagChoice - 1].Name;
+                    _tagRepository.Update(tag);
+                    Console.WriteLine("successfully updated");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid entry");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid entry");
+            }
         }
-
         private void Remove()
         {
-            throw new NotImplementedException();
+            List<Tag> tags = _tagRepository.GetAll();
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}) Id: {tags[i].Id} Name: {tags[i].Name}");
+            }
+            Console.Write("Please choose tag> ");
+            int userTagChoice = -1;
+            bool isUserTagChoice = int.TryParse(Console.ReadLine(), out userTagChoice);
+            if (isUserTagChoice)
+            {
+                try
+                {
+                    _tagRepository.Delete(tags[userTagChoice - 1].Id);
+                }
+                catch(ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine($"Please pick number between {1} and {tags.Count}");
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    Console.WriteLine($"Please pick number between {1} and {tags.Count}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice");
+            }
+
         }
     }
 }
